@@ -4,12 +4,32 @@
 # Maintainer: Eftakhairul Islam <eftakhairul@gmail.com>
 ############################################################
 
-# Base Image Oracle Java 7
-# https://github.com/dockerfile/java/tree/master/oracle-java7
-FROM dockerfile/java:oracle-java7
+# Base Image Ubuntu Trusty 14.04 (LTS) 
+FROM ubuntu:14.04
 
-# Set the file maintainer (your name - the file's author)
+# http://eftakhairul.com
 MAINTAINER Eftakhairul Islam  <eftakhairul@gmail.com>
+
+#Install utility libraries
+RUN apt-get update && apt-get install -y \
+    wget \
+    tar
+
+# Install Java.
+# Ref: https://github.com/dockerfile/java/tree/master/oracle-java7
+RUN \
+  echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+  add-apt-repository -y ppa:webupd8team/java && \
+  apt-get update && \
+  apt-get install -y oracle-java7-installer && \
+  rm -rf /var/lib/apt/lists/* && \
+  rm -rf /var/cache/oracle-jdk7-installer
+
+# Define working directory.
+WORKDIR /data
+
+# Define commonly used JAVA_HOME variable
+ENV JAVA_HOME /usr/lib/jvm/java-7-oracle
 
 
 #Teamcity data path
@@ -24,5 +44,6 @@ RUN wget $TEAMCITY_DOWNLOAD/$TEAMCITY_PACKAGE && \
     tar zxf $TEAMCITY_PACKAGE -C /opt && \
     rm -rf $TEAMCITY_PACKAGE
 
+#Expose the PORT 8111
 EXPOSE 8111
 CMD ["/opt/TeamCity/bin/teamcity-server.sh", "run"]
