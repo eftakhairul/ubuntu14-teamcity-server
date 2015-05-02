@@ -1,1 +1,1 @@
-TeamCity CI Server based on Ubuntu 14.04 & Oracle Java 7
+TeamCity 9.4 CI Server based on Ubuntu 14.04 & Oracle Java 7
