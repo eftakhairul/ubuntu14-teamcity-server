@@ -13,7 +13,8 @@ MAINTAINER Eftakhairul Islam  <eftakhairul@gmail.com>
 #Install utility libraries
 RUN apt-get update && apt-get install -y \
     wget \
-    tar
+    tar \
+    software-properties-common
 
 # Install Java.
 # Ref: https://github.com/dockerfile/java/tree/master/oracle-java7
